@@ -1,41 +1,16 @@
 /*
- * data/site-data.js 의 내용을 화면에 그려주는 코드.
- * 내용을 바꾸고 싶으면 이 파일이 아니라 data/site-data.js 를 고치세요.
+ * 메인 페이지(index.html) 전용 코드.
+ * 여러 페이지가 함께 쓰는 부분은 js/common.js 에 있습니다.
+ * 내용을 바꾸고 싶으면 data/site-data.js 를 고치세요.
  */
 
-// "brand.name" 같은 문자열로 데이터에서 값을 꺼냅니다.
-function getValue(path) {
-  return path.split(".").reduce(function (obj, key) {
-    return obj == null ? undefined : obj[key];
-  }, SITE_DATA);
-}
+// 수요 조사 배너: 구글 폼 링크를 넣었을 때만 화면에 나옵니다.
+function fillSurvey() {
+  var url = SITE_DATA.survey.url;
+  if (!url) return;
 
-// data-bind 속성이 붙은 요소에 값을 채웁니다.
-function fillBindings() {
-  document.querySelectorAll("[data-bind]").forEach(function (el) {
-    var value = getValue(el.dataset.bind);
-    if (value != null) el.textContent = value;
-  });
-
-  document.querySelectorAll("[data-bind-href]").forEach(function (el) {
-    var parts = el.dataset.bindHref.split(":");
-    var value = getValue(parts[1]);
-    if (value != null) el.href = parts[0] + ":" + value;
-  });
-}
-
-function renderProblems() {
-  document.getElementById("problem-list").innerHTML = SITE_DATA.problems
-    .map(function (item) {
-      return (
-        '<article class="card">' +
-        '<div class="card__icon">' + item.icon + "</div>" +
-        '<h3 class="card__title">' + item.title + "</h3>" +
-        '<p class="card__body">' + item.body + "</p>" +
-        "</article>"
-      );
-    })
-    .join("");
+  document.getElementById("survey-cta").href = url;
+  document.getElementById("survey").hidden = false;
 }
 
 function renderServiceTiers() {
@@ -96,48 +71,16 @@ function renderPlans() {
     .join("");
 }
 
-function renderTrust() {
-  document.getElementById("trust-list").innerHTML = SITE_DATA.trustPoints
-    .map(function (point) {
-      return (
-        '<article class="card">' +
-        '<div class="card__icon">' + point.icon + "</div>" +
-        '<h3 class="card__title">' + point.title + "</h3>" +
-        '<p class="card__body">' + point.body + "</p>" +
-        "</article>"
-      );
-    })
-    .join("");
-}
-
-function renderProcess() {
-  document.getElementById("process-list").innerHTML = SITE_DATA.process
-    .map(function (item) {
-      return (
-        '<li class="step">' +
-        '<span class="step__num">' + item.step + "</span>" +
-        "<div>" +
-        '<h3 class="step__title">' + item.title + "</h3>" +
-        '<p class="step__body">' + item.body + "</p>" +
-        "</div>" +
-        "</li>"
-      );
-    })
-    .join("");
-}
-
 fillBindings();
-renderProblems();
+fillContact();
+fillSurvey();
+setupNav();
+renderCards("problem-list", SITE_DATA.problems);
 renderServiceTiers();
 renderPlans();
-renderTrust();
-renderProcess();
+renderCards("trust-list", SITE_DATA.trustPoints);
+renderSteps("process-list", SITE_DATA.process);
 
 document.title = SITE_DATA.brand.name + " — 원룸 생활 잡일 대행";
 
-// PWA: 서비스워커 등록 (file:// 로 열면 동작하지 않습니다)
-if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-  window.addEventListener("load", function () {
-    navigator.serviceWorker.register("sw.js");
-  });
-}
+registerServiceWorker();

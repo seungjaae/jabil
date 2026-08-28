@@ -3,13 +3,18 @@
  * 내용을 수정한 뒤 반영이 안 되면 아래 CACHE_NAME 의 숫자를 올리세요.
  */
 
-const CACHE_NAME = "golmok-v1";
+const CACHE_NAME = "golmok-v2";
 
 const ASSETS = [
   "./",
   "./index.html",
+  "./owner.html",
+  "./log.html",
   "./css/style.css",
+  "./js/common.js",
   "./js/render.js",
+  "./js/owner.js",
+  "./js/log.js",
   "./data/site-data.js",
   "./manifest.json",
   "./icons/icon.svg",

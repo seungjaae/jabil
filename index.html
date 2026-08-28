@@ -17,12 +17,17 @@
   <!-- 상단 고정 바 -->
   <header class="topbar">
     <a class="topbar__brand" href="#top" data-bind="brand.name"></a>
-    <nav class="topbar__nav">
+    <nav class="topbar__nav" id="nav">
       <a href="#services">서비스</a>
-      <a href="#subscription">구독</a>
       <a href="#trust">신뢰</a>
-      <a href="#contact" class="topbar__cta">신청하기</a>
+      <a href="#process">이용 방법</a>
+      <a href="#subscription">구독</a>
     </nav>
+    <div class="topbar__right">
+      <a href="#contact" class="topbar__cta" data-cta>신청하기</a>
+      <button class="topbar__toggle" id="nav-toggle" type="button"
+              aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav">☰</button>
+    </div>
   </header>
 
   <main id="top">
@@ -35,7 +40,7 @@
         <p class="hero__intro" data-bind="brand.intro"></p>
         <p class="hero__slogan">“<span data-bind="brand.slogan"></span>”</p>
         <div class="hero__actions">
-          <a href="#contact" class="btn btn--primary">지금 신청하기</a>
+          <a href="#contact" class="btn btn--primary" data-cta>지금 신청하기</a>
           <a href="#services" class="btn btn--ghost">서비스 · 가격 보기</a>
         </div>
         <p class="hero__note" data-bind="contact.responseNote"></p>
@@ -55,6 +60,19 @@
       </div>
     </section>
 
+    <!-- 수요 조사 배너 (구글 폼 링크가 있을 때만 표시) -->
+    <section class="survey" id="survey" hidden>
+      <div class="wrap survey__inner">
+        <div>
+          <p class="survey__label" data-bind="survey.label"></p>
+          <h2 class="survey__title" data-bind="survey.title"></h2>
+          <p class="survey__body" data-bind="survey.body"></p>
+        </div>
+        <a class="btn btn--primary survey__cta" id="survey-cta"
+           target="_blank" rel="noopener" data-bind="survey.cta"></a>
+      </div>
+    </section>
+
     <!-- 서비스 메뉴 -->
     <section class="section" id="services">
       <div class="wrap">
@@ -68,18 +86,8 @@
       </div>
     </section>
 
-    <!-- 구독 -->
-    <section class="section section--alt" id="subscription">
-      <div class="wrap">
-        <p class="section__label">구독 요금제 <span class="chip" data-bind="subscription.status"></span></p>
-        <h2 class="section__title">자주 필요하시다면 구독이 저렴합니다</h2>
-        <p class="section__desc" data-bind="subscription.note"></p>
-        <div class="grid grid--3" id="plan-list"></div>
-      </div>
-    </section>
-
     <!-- 신뢰 -->
-    <section class="section" id="trust">
+    <section class="section section--alt" id="trust">
       <div class="wrap">
         <p class="section__label">믿고 맡기셔도 되는 이유</p>
         <h2 class="section__title">문을 여는 일이 부담되지 않도록</h2>
@@ -88,11 +96,24 @@
     </section>
 
     <!-- 이용 방법 -->
-    <section class="section section--alt" id="process">
+    <section class="section" id="process">
       <div class="wrap">
         <p class="section__label">이용 방법</p>
         <h2 class="section__title">신청부터 완료까지</h2>
         <ol class="steps" id="process-list"></ol>
+      </div>
+    </section>
+
+    <!-- 구독 (아직 준비 중이라 페이지 뒤쪽에 둡니다) -->
+    <section class="section section--alt" id="subscription">
+      <div class="wrap">
+        <p class="section__label">구독 요금제 <span class="chip" data-bind="subscription.status"></span></p>
+        <h2 class="section__title">자주 필요하시다면 구독이 저렴합니다</h2>
+        <p class="section__desc" data-bind="subscription.note"></p>
+        <div class="grid grid--3" id="plan-list"></div>
+        <p class="section__more">
+          원룸 건물을 갖고 계신가요? <a class="link" href="owner.html">건물주 전용 안내 보기 →</a>
+        </p>
       </div>
     </section>
 
@@ -107,7 +128,7 @@
         <dl class="contact__list">
           <div class="contact__row">
             <dt>카카오톡</dt>
-            <dd data-bind="contact.kakao"></dd>
+            <dd id="contact-kakao"></dd>
           </div>
           <div class="contact__row">
             <dt>전화</dt>
@@ -127,14 +148,19 @@
 
   </main>
 
+  <!-- 모바일 하단 고정 버튼 -->
+  <a class="mobilebar" href="#contact" data-cta>💬 카카오톡으로 문의하기</a>
+
   <footer class="footer">
     <div class="wrap">
       <p class="footer__brand" data-bind="brand.name"></p>
       <p class="footer__disclaimer" data-bind="disclaimer"></p>
+      <p class="footer__staff"><a href="log.html">작업 일지</a></p>
     </div>
   </footer>
 
   <script src="data/site-data.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/render.js"></script>
 </body>
 </html>
